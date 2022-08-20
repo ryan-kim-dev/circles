@@ -26,7 +26,7 @@ const PORT = 5000;
 
 app.use('/uploads', express.static('uploads')); // 클라이언트에서 서버의 정적 파일에 접근할 수 있도록
 
-app.post('/upload', upload.single('imageTest'), (req, res) => {
+app.post('/upload', upload.single('image'), (req, res) => {
   // req.file: 요청 메세지에 담긴 파일의 정보
   console.log(req.file);
   res.json(req.file);
