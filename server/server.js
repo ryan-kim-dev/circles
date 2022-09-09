@@ -1,7 +1,14 @@
 const express = require('express');
+require('dotenv').config();
 const multer = require('multer');
 const { v4: uuid } = require('uuid'); // 버젼 4 사용
 const mime = require('mime-types');
+// 몽고디비 연결
+const mongoose = require('mongoose');
+// 몽고디비 환경변수 연결
+const config = require('./config/keys');
+// model(테이블) 연결
+const { Image } = require('./models/Image');
 
 const storage = multer.diskStorage({
   // 성공의 경우 콜백함수 호출의 첫번째 인수가 null, 실패의 경우 첫번째 인수는 에러 객체
@@ -24,14 +31,33 @@ const upload = multer({
 const app = express();
 const PORT = 5000;
 
-app.use('/uploads', express.static('uploads')); // 클라이언트에서 서버의 정적 파일에 접근할 수 있도록
+// * 먼저 몽고디비와 연결시키고 난 후에 라우팅하기 위해 then 안에서 라우팅
+mongoose
+  .connect(config.mongoURI) // promise를 리턴하므로 then 체이닝 가능
+  .then(() => {
+    console.log('mongoDB 연결됨');
 
-app.post('/upload', upload.single('image'), (req, res) => {
-  // req.file: 요청 메세지에 담긴 파일의 정보
-  console.log(req.file);
-  res.json(req.file);
-});
-app.listen(PORT, () => console.log(`${PORT}번 포트로 서버 실행중`));
+    app.use('/uploads', express.static('uploads')); // 클라이언트에서 서버의 정적 파일에 접근할 수 있도록
+
+    app.post('/images', upload.single('image'), async (req, res) => {
+      const image = await new Image({
+        key: req.file.filename,
+        originalFileName: req.file.originalname,
+      }).save();
+      // db에 저장되고 난 후 응답을 보내도록 async/await으로 비동기 처리
+      res.status(200).json(image);
+    });
+
+    app.get('/images', async (req, res) => {
+      const images = await Image.find(); // 전체 이미지들 불러오기
+      res.status(200).json(images);
+    });
+
+    app.listen(PORT, () => {
+      console.log(`${PORT}번 포트로 서버 실행중`);
+    });
+  })
+  .catch(err => console.log(`${err}`));
 
 // uuid: 유저가 업로드한 파일에 고유한 uuid를 부여하기 위해 사용
 // mime-types: jpeg 포맷으로 넘어오지 않고 있기 때문에 이를 특정 포맷으로 바꿔 저장하기 위해 사용
