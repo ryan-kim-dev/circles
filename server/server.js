@@ -1,5 +1,8 @@
 const express = require('express');
 require('dotenv').config();
+const path = require('path');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const { v4: uuid } = require('uuid'); // 버젼 4 사용
 const mime = require('mime-types');
@@ -30,7 +33,7 @@ const upload = multer({
 
 const app = express();
 const PORT = 5000;
-
+app.use(cors());
 // * 먼저 몽고디비와 연결시키고 난 후에 라우팅하기 위해 then 안에서 라우팅
 mongoose
   .connect(config.mongoURI) // promise를 리턴하므로 then 체이닝 가능

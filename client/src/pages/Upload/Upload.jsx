@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import ProgressBar from '../../components/ProgressBar';
-import * as S from './styles';
+import * as S from './UploadStyles';
 
 function Upload() {
+  const navigate = useNavigate();
+
   const defaultFileName = '이미지 파일을 업로드 해주세요';
   const [file, setFile] = useState(null);
   const [imgSrc, setImgSrc] = useState(null);
@@ -26,7 +29,7 @@ function Upload() {
     formData.append('image', file);
 
     try {
-      const res = await axios.post('/upload', formData, {
+      const res = await axios.post('/images', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (event) => {
           setPersent(`${Math.round((100 * event.loaded) / event.total)}%`);
@@ -39,6 +42,7 @@ function Upload() {
         setImgSrc(null);
       }, 3000);
       console.log(res);
+      navigate('/');
     } catch (err) {
       toast.error(err.message);
       setPersent('0%');

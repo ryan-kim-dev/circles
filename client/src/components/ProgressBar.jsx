@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ProgressBar = ({ persent }) => {
+function ProgressBar({ persent }) {
   return (
     <BarBoundary>
       <BarInside persent={persent}>{persent}</BarInside>
     </BarBoundary>
   );
-};
+}
 
 export default ProgressBar;
 
@@ -24,6 +24,6 @@ const BarInside = styled.div`
   border-radius: 10px;
   text-align: center;
   color: #ffffff;
-  width: ${props => props.persent};
+  width: ${(props) => props.persent};
   transition: 0.3s;
 `;
