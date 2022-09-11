@@ -18,18 +18,16 @@ function PostList() {
       .catch((err) => console.log(`${err}`));
   }, []);
 
-  return (
-    <S.PostLists>
-      {images.map((image) => {
-        return (
-          <S.PostListItem key={image.key}>
-            {/* src가 서버의 이미지 파일 저장 폴더로 접근하는 경로 */}
-            <img src={`http://localhost:5000/uploads/${image.key}`} alt="#" />
-          </S.PostListItem>
-        );
-      })}
-    </S.PostLists>
-  );
+  const postlists = images.map((image) => {
+    return (
+      <S.PostListItem key={image.key}>
+        {/* src가 서버의 이미지 파일 저장 폴더로 접근하는 경로 */}
+        <img src={`http://localhost:5000/uploads/${image.key}`} alt="#" />
+      </S.PostListItem>
+    );
+  });
+
+  return <S.PostLists>{postlists}</S.PostLists>;
 }
 
 export default PostList;
