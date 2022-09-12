@@ -1,46 +1,66 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
+import { regiWithEmailPw } from '../../../apis/userApi';
+import { Layout } from '../../../GlobalStyle';
 
-function RegisterForm() {
-  const [userInfo, setUserInfo] = useState({
-    username: '',
+function Register() {
+  const queryClient = useQueryClient();
+  const regiWithEmailPwMutation = useMutation(regiWithEmailPw, {
+    onSuccess: () => {
+      // 캐시 무효화하고 다시 Fetch
+      queryClient.invalidateQueries('users');
+    },
+  });
+  const navigate = useNavigate();
+
+  const [userInfo, setuserInfo] = useState({
     email: '',
+    username: '',
     password: '',
   });
 
   const onChange = (e) => {
-    setUserInfo({
-      ...userInfo,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setuserInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
-  const onSubmit = (e) => {
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(userInfo);
+    regiWithEmailPwMutation.mutate(userInfo);
+
+    return navigate('/');
   };
 
   return (
-    <div>
-      <form onChange={onChange} onSubmit={onSubmit}>
+    <Layout>
+      <form htmlFor="register" onSubmit={onSubmit} onChange={onChange}>
         <div>
           <label htmlFor="username">
-            <input type="text" name="username" id="username" />
+            닉네임
+            <input id="username" name="username" type="text" />
           </label>
         </div>
         <div>
           <label htmlFor="email">
-            <input type="email" name="email" id="email" />
+            이메일 주소
+            <input id="email" name="email" type="email" />
           </label>
         </div>
         <div>
           <label htmlFor="password">
-            <input type="password" name="password" id="password" />
+            비밀번호
+            <input id="password" name="password" type="password" />
           </label>
         </div>
-        <br />
-        <button type="submit">Register</button>
+
+        <button type="submit">회원가입</button>
       </form>
-    </div>
+    </Layout>
   );
 }
 
-export default RegisterForm;
+export default Register;

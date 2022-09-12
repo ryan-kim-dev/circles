@@ -36,7 +36,13 @@ const upload = multer({
 
 const app = express();
 const PORT = 5000;
+
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// 토큰을 쿠키에 담기 위해 쿠키파서 사용. 참고: https://velog.io/@heony/cookie-parser
+app.use(cookieParser());
+
 // * 먼저 몽고디비와 연결시키고 난 후에 라우팅하기 위해 then 안에서 라우팅
 mongoose
   .connect(config.mongoURI) // promise를 리턴하므로 then 체이닝 가능

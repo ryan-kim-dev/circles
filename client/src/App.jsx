@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import GlobalStyle from './GlobalStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import Course from './pages/Course';
-// import RegisterForm from './features/users/register/RegisterForm';
+import RegisterForm from './features/users/register/RegisterForm';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/course" element={<Course />} />
-        {/* <Route path="/register" element={<RegisterForm />} /> */}
+        <Route path="/register" element={<RegisterForm />} />
       </Routes>
 
       <Navbar />

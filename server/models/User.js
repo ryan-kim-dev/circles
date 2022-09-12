@@ -5,7 +5,7 @@ const saltRounds = 10; // salt를 이용해서 비밀번호를 암호화 - 10자
 const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
-  name: {
+  username: {
     type: String,
     maxlength: 25,
   },
@@ -14,7 +14,6 @@ const userSchema = mongoose.Schema({
     // unique: 중복된 이메일 주소 사용 막기
     type: String,
     trim: true,
-    unique: 1,
   },
   password: {
     type: String,
