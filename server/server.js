@@ -128,7 +128,7 @@ mongoose
       });
     });
 
-    app.post('/api/images', upload.single('image'), async (req, res) => {
+    app.post('/api/posts', upload.single('image'), async (req, res) => {
       const image = await new Image({
         key: req.file.filename,
         originalFileName: req.file.originalname,
@@ -137,7 +137,7 @@ mongoose
       res.status(200).json(image);
     });
 
-    app.get('/api/images', async (req, res) => {
+    app.get('/api/posts', async (req, res) => {
       const images = await Image.find(); // 전체 이미지들 불러오기
       res.status(200).json(images);
     });
