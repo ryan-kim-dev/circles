@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import ProgressBar from '../../components/ProgressBar';
+import ProgressBar from '../../../components/ProgressBar';
 import * as S from './UploadStyles';
 
 function Upload() {
@@ -29,7 +29,7 @@ function Upload() {
     formData.append('image', file);
 
     try {
-      const res = await axios.post('/images', formData, {
+      const res = await axios.post('/api/images', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (event) => {
           setPersent(`${Math.round((100 * event.loaded) / event.total)}%`);

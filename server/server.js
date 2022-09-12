@@ -12,6 +12,9 @@ const mongoose = require('mongoose');
 const config = require('./config/keys');
 // model(테이블) 연결
 const { Image } = require('./models/Image');
+const { User } = require('./models/User');
+// 폴더를 분리해서 작성해둔 인증 처리하는 함수 가져오기
+const { auth } = require('./middleware/auth');
 
 const storage = multer.diskStorage({
   // 성공의 경우 콜백함수 호출의 첫번째 인수가 null, 실패의 경우 첫번째 인수는 에러 객체
@@ -42,7 +45,56 @@ mongoose
 
     app.use('/uploads', express.static('uploads')); // 클라이언트에서 서버의 정적 파일에 접근할 수 있도록
 
-    app.post('/images', upload.single('image'), async (req, res) => {
+    // * 2.1 회원가입 요청의 응답
+    app.post('/api/users/register', (req, res) => {
+      // 회원가입시 클라이언트 단에서 입력된 정보를 가져와 데이터베이스에 저장한다.
+      // req.body에 json 객체로 키-값 이 들어가있다.
+      const user = new User(req.body); // 정의한 모델을 불러와 요청 안의 데이터로 새 인스턴스 생성
+      user.save((err, userInfo) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).json({
+          success: true,
+        });
+      });
+      // save: 몽고디비의 메서드 - 콜백함수로 에러, 저장된 데이터를 매개변수로 받는다.
+      // userInfo = ( user = new User(req.body) )
+    });
+
+    // * 2.2 로그인 요청의 응답
+    // 1. 로그인 요청으로 온 이메일 주소가 데이터베이스에 존재하는지 확인한다.
+    // 2. 이메일 주소가 데이터베이스에 있다면 비밀번호의 일치 여부를 확인한다.
+    // 3. 이메일과 비밀번호가 모두 일치하면 토큰을 생성한다.
+    app.post('/api/users/login', (req, res) => {
+      User.findOne({ email: req.body.email }, (err, user) => {
+        if (!user) {
+          return res.json({
+            loginSuccess: false,
+            message: '가입되지 않은 사용자입니다. 이메일 주소를 확인해주세요',
+          });
+        }
+        // 요청된 이메일이 데이터베이스에 존재할 경우 비밀번호 일치 여부 확인.
+        user.comparePassword(req.body.password, (err, isMatch) => {
+          if (!isMatch) {
+            return res.json({
+              loginSuccess: false,
+              message: '비밀번호가 틀렸습니다.',
+            });
+          }
+
+          // 비밀번호가 일치하는 경우 - 토큰을 생성한다.
+          user.generateToken((err, user) => {
+            if (err) return res.status(400).send(err);
+            // 토큰을 저장하는 곳은 쿠키, 세션스토리지, 로컬스토리지 다양함. 여기서는 쿠키에 저장해본다.
+            res
+              .cookie('x_auth', user.token)
+              .status(200)
+              .json({ loginSuccess: true, userId: user._id });
+          });
+        });
+      });
+    });
+
+    app.post('/api/images', upload.single('image'), async (req, res) => {
       const image = await new Image({
         key: req.file.filename,
         originalFileName: req.file.originalname,
@@ -51,7 +103,7 @@ mongoose
       res.status(200).json(image);
     });
 
-    app.get('/images', async (req, res) => {
+    app.get('/api/images', async (req, res) => {
       const images = await Image.find(); // 전체 이미지들 불러오기
       res.status(200).json(images);
     });

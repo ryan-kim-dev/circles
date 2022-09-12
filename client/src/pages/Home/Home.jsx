@@ -1,5 +1,5 @@
 import React from 'react';
-import PostList from './PostList';
+import PostList from '../../features/posts/PostList';
 import * as S from './HomeStyles';
 import Navbar from '../../components/Navbar/Navbar';
 

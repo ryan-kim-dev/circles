@@ -13,7 +13,7 @@ function PostList() {
 
   useEffect(() => {
     axios
-      .get('/images')
+      .get('/api/images')
       .then((response) => setImages(response.data))
       .catch((err) => console.log(`${err}`));
   }, []);
