@@ -9,4 +9,9 @@ export const regiWithEmailPw = async (userInfo) => {
   return response.data;
 };
 
+export const loginWithEmailPw = async (userInfo) => {
+  const response = await userApi.post('/api/users/login', userInfo);
+  return response.data;
+};
+
 export default userApi;

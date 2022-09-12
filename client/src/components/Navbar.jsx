@@ -8,6 +8,16 @@ function Navbar() {
   return (
     <NavbarLayout>
       <NavbarBtnBox>
+        <NavBtn type="button" onClick={() => navigate('/register')}>
+          회원가입
+        </NavBtn>
+      </NavbarBtnBox>
+      <NavbarBtnBox>
+        <NavBtn type="button" onClick={() => navigate('/login')}>
+          로그인
+        </NavBtn>
+      </NavbarBtnBox>
+      <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/')}>
           홈
         </NavBtn>
@@ -46,5 +56,5 @@ const NavBtn = styled.button`
   border: none;
   cursor: pointer;
   background-color: transparent;
-  width: 100px;
+  width: 70px;
 `;

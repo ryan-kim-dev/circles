@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { regiWithEmailPw } from '../../../apis/userApi';
 import { Layout } from '../../../GlobalStyle';
 
-function Register() {
-  const queryClient = useQueryClient();
+function RegisterForm() {
   const regiWithEmailPwMutation = useMutation(regiWithEmailPw, {
     onSuccess: () => {
       // 캐시 무효화하고 다시 Fetch
-      queryClient.invalidateQueries('users');
+      console.log('회원가입 성공');
     },
   });
   const navigate = useNavigate();
@@ -63,4 +62,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default RegisterForm;
