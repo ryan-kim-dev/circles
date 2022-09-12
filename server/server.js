@@ -92,6 +92,40 @@ mongoose
           });
         });
       });
+
+      // * 2.3 인증기능 라우터 - 인증페이지 요청 응답
+      // role이 1이면 관리자, 0이면 일반 유저인 경우로 한다.
+      app.get('/api/users/auth', auth, (req, res) => {
+        // './middleware/auth.js'의 auth 함수에서 코드가 종료되면서 next() 호출하므로
+        // 미들웨어를 실행시키고 다시 나머지 코드를 실행해서 응답을 보내줌.
+        // 미들웨어에서 예외처리를 해두었기 때문에 next()후 여기로 돌아온다면
+        // 인증이 성공한 경우이다.
+        res.status(200).json({
+          _id: req.user._id,
+          isAdmin: req.user.role === 0 ? false : true,
+          isAuth: true,
+          name: req.user.name,
+          email: req.user.email,
+          role: req.user.role,
+          photoURL: req.user.photoURL,
+        });
+      });
+
+      // * 2.4 로그아웃 라우터 - 로그아웃 하는 사용자의 토큰을 지워준다
+      // db에서 로그아웃 하는 사용자의 토큰을 지우면 클라이언트의 쿠키에서 가져온 토큰과
+      // db의 토큰을 비교 시 맞지 않기 때문에 로그인 상태를 유지할 수 없음.
+      app.get('/api/users/logout', auth, (req, res) => {
+        User.findOneAndUpdate(
+          { _id: req.user._id },
+          { token: '' },
+          (err, user) => {
+            if (err) return res.json({ success: false, err });
+            return res.status(200).send({
+              success: true,
+            });
+          }
+        );
+      });
     });
 
     app.post('/api/images', upload.single('image'), async (req, res) => {
