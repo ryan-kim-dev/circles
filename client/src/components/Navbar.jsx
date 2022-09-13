@@ -1,9 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 function Navbar() {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    axios.get('/api/users/logout').then((res) => {
+      console.log(res.data);
+      return navigate('/');
+    });
+  };
+
+  const handleMypage = async () => {
+    const response = await axios.get('/api/users/auth');
+    console.log(response.data);
+    navigate('/mypage');
+  };
 
   return (
     <NavbarLayout>
@@ -18,6 +32,11 @@ function Navbar() {
         </NavBtn>
       </NavbarBtnBox>
       <NavbarBtnBox>
+        <NavBtn type="button" onClick={handleLogout}>
+          로그아웃
+        </NavBtn>
+      </NavbarBtnBox>
+      <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/')}>
           홈
         </NavBtn>
@@ -28,8 +47,8 @@ function Navbar() {
         </NavBtn>
       </NavbarBtnBox>
       <NavbarBtnBox>
-        <NavBtn type="button" onClick={() => navigate('/course')}>
-          드라이브 코스
+        <NavBtn type="button" onClick={handleMypage}>
+          마이페이지
         </NavBtn>
       </NavbarBtnBox>
     </NavbarLayout>
@@ -56,5 +75,5 @@ const NavBtn = styled.button`
   border: none;
   cursor: pointer;
   background-color: transparent;
-  width: 70px;
+  width: 60px;
 `;

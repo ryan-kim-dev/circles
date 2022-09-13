@@ -11,6 +11,7 @@ import Course from './pages/Course';
 import RegisterForm from './features/users/components/RegisterForm';
 import LoginForm from './features/users/components/LoginForm';
 import Navbar from './components/Navbar';
+import Mypage from './pages/Mypage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/course" element={<Course />} />
+        <Route path="/mypage" element={<Mypage />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
       </Routes>
