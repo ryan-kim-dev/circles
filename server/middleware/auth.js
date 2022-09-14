@@ -9,7 +9,7 @@ const auth = (req, res, next) => {
 
   // 2. 토큰을 복호화 한 후 유저를 찾는다.
   User.findByToken(token, (err, user) => {
-    console.log(user);
+    console.log(user); // TODO: user 값 null로 들어오는 중..
     // early return으로 예외처리 선행: 에러핸들링, 유저가 없는 경우의 응답
     if (err) throw err;
     if (!user) return res.json({ isAuth: false, error: true });

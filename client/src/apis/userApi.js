@@ -14,4 +14,9 @@ export const loginWithEmailPw = async (userInfo) => {
   return response.data;
 };
 
+export const logout = async () => {
+  const response = await userApi.get('/api/users/logout');
+  return response.data;
+};
+
 export default userApi;

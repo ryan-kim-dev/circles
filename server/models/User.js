@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema({
 // 콜백함수를 실행하고 나서 다음 코드 실행
 userSchema.pre('save', function (next) {
   const user = this;
-
+  console.log(user);
   // 조건문: 비밀번호를 변경한 경우에만 비밀번호 해싱. 이름, 이메일 변경 시 아래 코드 실행 x
   if (user.isModified('password')) {
     //비밀번호를 암호화 시킨다.
@@ -74,6 +74,7 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
 userSchema.methods.generateToken = function (cb) {
   // json web token을 이용해서 토큰 생성하기
   const user = this;
+  console.log(user);
   const token = jwt.sign(user._id.toHexString(), 'secretToken'); // user._id 와 'secretToken' 을 합쳐서 jwt 토큰을 생성함.
   user.token = token;
   user.save(function (err, user) {
@@ -85,7 +86,7 @@ userSchema.methods.generateToken = function (cb) {
 // * 가져온 토큰 복호화 하기
 userSchema.statics.findByToken = function (token, cb) {
   const user = this;
-
+  console.log(user);
   // 토큰 디코딩 - json 웹 토큰 사용법 참고
   jwt.verify(token, 'secretToken', function (err, decoded) {
     // 유저의 아이디를 이용해서 유저를 찾은 다음,

@@ -8,7 +8,7 @@ function Navbar() {
 
   const handleLogout = () => {
     axios.get('/api/users/logout').then((res) => {
-      console.log(res.data);
+      console.log(res);
       return navigate('/');
     });
   };
@@ -44,6 +44,11 @@ function Navbar() {
       <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/upload')}>
           업로드
+        </NavBtn>
+      </NavbarBtnBox>
+      <NavbarBtnBox>
+        <NavBtn type="button" onClick={() => navigate('/course')}>
+          드라이브코스
         </NavBtn>
       </NavbarBtnBox>
       <NavbarBtnBox>
