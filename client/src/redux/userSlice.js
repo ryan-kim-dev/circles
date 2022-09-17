@@ -63,6 +63,7 @@ const userSlice = createSlice({
     state.loading = true;
   },
   [loginUser.fulfilled]: (state, { payload: { error, msg, token, user } }) => {
+    // * 서버에서 보내는 응답에 없는 항목들이라 현재 아래 코드 동작 안함!
     state.loading = false;
     if (error) {
       state.error = error;

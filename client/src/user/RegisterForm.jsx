@@ -24,9 +24,12 @@ function RegisterForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const res = await dispatch(signUpUser(userInfo)); // 리듀서 사용
-    console.log(res.data);
-    return navigate('/');
+    dispatch(signUpUser(userInfo))
+      .then((res) => {
+        if (res.payload.success === true) return navigate('/login');
+        return alert('잘못된 입력입니다');
+      })
+      .catch((err) => alert(`${err}`));
   };
 
   return (
