@@ -157,4 +157,7 @@ sketch
 # mongodb Config files
 config/
 
+# 작업용 임시 이미지 업로드 서버
+uploads/
+
 # End of https://www.toptal.com/developers/gitignore/api/node,react

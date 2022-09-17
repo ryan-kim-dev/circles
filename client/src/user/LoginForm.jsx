@@ -38,7 +38,11 @@ function LoginForm() {
     // TODO: await 사용 안되고 있다고 나오는데..지우면 오동작함. 확인 필요
     const res = await dispatch(loginUser(userInfo));
     // console.log(res.payload); // {loginSuccess: true, userId: '32fqqe4rewafradsgr'}
-    if (res.payload.loginSuccess === true) return navigate('/');
+    if (res.payload.loginSuccess === true) {
+      const loginStatus = true;
+      localStorage.setItem('loginStatus', loginStatus);
+      return navigate('/');
+    }
     alert('회원가입 후 이용해주세요');
     return navigate('/register');
   };

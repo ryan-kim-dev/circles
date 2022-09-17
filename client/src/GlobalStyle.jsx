@@ -18,7 +18,7 @@ export default GlobalStyle;
 
 export const Layout = styled.div`
   width: 100%;
-  height: 100vh;
+  height: max-content;
   max-width: 1330px;
   margin: 0 auto;
   background-color: #fff;

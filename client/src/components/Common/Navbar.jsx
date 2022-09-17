@@ -9,9 +9,9 @@ function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    const res = dispatch(logoutUser());
-    console.log(res);
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    localStorage.clear();
     return navigate('/');
   };
 
@@ -24,21 +24,27 @@ function Navbar() {
 
   return (
     <NavbarLayout>
-      <NavbarBtnBox>
-        <NavBtn type="button" onClick={() => navigate('/register')}>
-          회원가입
-        </NavBtn>
-      </NavbarBtnBox>
-      <NavbarBtnBox>
-        <NavBtn type="button" onClick={() => navigate('/login')}>
-          로그인
-        </NavBtn>
-      </NavbarBtnBox>
-      <NavbarBtnBox>
-        <NavBtn type="button" onClick={handleLogout}>
-          로그아웃
-        </NavBtn>
-      </NavbarBtnBox>
+      {localStorage.loginStatus === 'true' ? (
+        <NavbarBtnBox>
+          <NavBtn type="button" onClick={handleLogout}>
+            로그아웃
+          </NavBtn>
+        </NavbarBtnBox>
+      ) : (
+        <>
+          <NavbarBtnBox>
+            <NavBtn type="button" onClick={() => navigate('/register')}>
+              회원가입
+            </NavBtn>
+          </NavbarBtnBox>
+          <NavbarBtnBox>
+            <NavBtn type="button" onClick={() => navigate('/login')}>
+              로그인
+            </NavBtn>
+          </NavbarBtnBox>
+        </>
+      )}
+
       <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/')}>
           홈
