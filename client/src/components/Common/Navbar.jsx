@@ -17,8 +17,9 @@ function Navbar() {
 
   const handleMypage = async () => {
     const response = await axios.get('/api/users/auth');
-    console.log(response.data);
-    navigate('/mypage');
+    if (response.data.isAuth === true) return navigate('/mypage');
+    alert('로그인 후 이용해주세요');
+    return navigate('/');
   };
 
   return (
