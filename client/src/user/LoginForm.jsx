@@ -25,8 +25,9 @@ function LoginForm() {
   const onSubmit = async (e) => {
     e.preventDefault();
     const res = await dispatch(loginUser(userInfo));
-    console.log(res);
-    return navigate('/');
+    if (res.payload.loginSuccess === true) return navigate('/');
+    alert('회원가입 후 이용해주세요');
+    return navigate('/register');
   };
 
   return (
