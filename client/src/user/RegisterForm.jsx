@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Layout } from '../GlobalStyle';
+import {
+  FormLayout,
+  FormContainer,
+  FormLogoBox,
+  FormLogoImg,
+  FormTitle,
+  FormWrapper,
+  FormRow,
+  FormLabelText,
+  FormInput,
+  FormSubmitBtn,
+} from './FormStyles';
+import Logo from '../assets/android-chrome-512x512.png';
 import { signUpUser } from '../redux/userSlice';
 
 function RegisterForm() {
@@ -33,30 +45,31 @@ function RegisterForm() {
   };
 
   return (
-    <Layout>
-      <form htmlFor="register" onSubmit={onSubmit} onChange={onChange}>
-        <div>
-          <label htmlFor="username">
-            닉네임
-            <input id="username" name="username" type="text" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="email">
-            이메일 주소
-            <input id="email" name="email" type="email" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="password">
-            비밀번호
-            <input id="password" name="password" type="password" />
-          </label>
-        </div>
-
-        <button type="submit">회원가입</button>
-      </form>
-    </Layout>
+    <FormLayout>
+      <FormContainer>
+        <FormLogoBox>
+          <FormLogoImg src={Logo} alt="logo" />
+        </FormLogoBox>
+        <FormTitle>회원가입</FormTitle>
+        <FormWrapper onChange={onChange} onSubmit={onSubmit}>
+          <FormRow>
+            <FormLabelText>메일주소</FormLabelText>
+            <FormInput type="email" id="email" name="email" />
+          </FormRow>
+          <FormRow>
+            <FormLabelText>닉네임</FormLabelText>
+            <FormInput type="text" id="id" name="username" />
+          </FormRow>
+          <FormRow>
+            <FormLabelText>비밀번호</FormLabelText>
+            <FormInput type="password" id="password" name="password" />
+          </FormRow>
+          <FormSubmitBtn type="submit" big>
+            회원 가입 하기
+          </FormSubmitBtn>
+        </FormWrapper>
+      </FormContainer>
+    </FormLayout>
   );
 }
 

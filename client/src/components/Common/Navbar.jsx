@@ -51,7 +51,7 @@ function Navbar() {
       </NavbarBtnBox>
       <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/course')}>
-          드라이브코스
+          코스
         </NavBtn>
       </NavbarBtnBox>
       <NavbarBtnBox>

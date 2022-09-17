@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import * as S from './PostListStyles';
+import {
+  PostLists,
+  PostListItem,
+  PostUserInfo,
+  PostUsername,
+  PostedDate,
+} from './PostListStyles';
 
 // * react-query 미사용 로직
 /* 
@@ -20,14 +26,18 @@ function PostList() {
 
   const postlists = images.map((image) => {
     return (
-      <S.PostListItem key={image.key}>
+      <PostListItem key={image.key}>
         {/* src가 서버의 이미지 파일 저장 폴더로 접근하는 경로 */}
         <img src={`http://localhost:5000/uploads/${image.key}`} alt="#" />
-      </S.PostListItem>
+        <PostUserInfo>
+          <PostUsername>{image.user.username}</PostUsername>
+          <PostedDate>{image.createdAt}</PostedDate>
+        </PostUserInfo>
+      </PostListItem>
     );
   });
 
-  return <S.PostLists>{postlists}</S.PostLists>;
+  return <PostLists>{postlists}</PostLists>;
 }
 
 export default PostList;

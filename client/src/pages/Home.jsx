@@ -1,12 +1,13 @@
 import React from 'react';
 import PostList from '../components/posts/PostList';
-import { Layout } from '../GlobalStyle';
+import Header from '../components/Common/Header';
 
 function Home() {
   return (
-    <Layout>
+    <>
+      <Header />
       <PostList />
-    </Layout>
+    </>
   );
 }
 

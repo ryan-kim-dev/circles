@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Upload from './pages/Upload';
 import Home from './pages/Home';
-import GlobalStyle from './GlobalStyle';
+import GlobalStyle, { Layout } from './GlobalStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import Course from './pages/Course';
 import Register from './pages/Register';
@@ -18,15 +18,16 @@ function App() {
     <div>
       <ToastContainer />
       <GlobalStyle />
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/course" element={<Course />} />
-        <Route path="/mypage" element={<Mypage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/course" element={<Course />} />
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Layout>
 
       <Navbar />
     </div>

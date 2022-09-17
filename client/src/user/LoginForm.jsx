@@ -2,8 +2,19 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../redux/userSlice';
-
-import { Layout } from '../GlobalStyle';
+import {
+  FormLayout,
+  FormContainer,
+  FormLogoBox,
+  FormLogoImg,
+  FormTitle,
+  FormWrapper,
+  FormRow,
+  FormLabelText,
+  FormInput,
+  FormSubmitBtn,
+} from './FormStyles';
+import Logo from '../assets/android-chrome-512x512.png';
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -24,31 +35,38 @@ function LoginForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    // TODO: await 사용 안되고 있다고 나오는데..지우면 오동작함. 확인 필요
     const res = await dispatch(loginUser(userInfo));
+    // console.log(res.payload); // {loginSuccess: true, userId: '32fqqe4rewafradsgr'}
     if (res.payload.loginSuccess === true) return navigate('/');
     alert('회원가입 후 이용해주세요');
     return navigate('/register');
   };
 
   return (
-    <Layout>
-      <form htmlFor="register" onSubmit={onSubmit} onChange={onChange}>
-        <div>
-          <label htmlFor="email">
-            이메일 주소
-            <input id="email" name="email" type="email" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="password">
-            비밀번호
-            <input id="password" name="password" type="password" />
-          </label>
-        </div>
+    <FormLayout>
+      <FormContainer>
+        <FormLogoBox>
+          <FormLogoImg src={Logo} alt="logo" />
+        </FormLogoBox>
+        <FormTitle>로그인</FormTitle>
+        <FormWrapper onChange={onChange} onSubmit={onSubmit}>
+          <FormRow>
+            <FormLabelText>이메일</FormLabelText>
+            <FormInput type="email" id="email" name="email" />
+          </FormRow>
 
-        <button type="submit">로그인</button>
-      </form>
-    </Layout>
+          <FormRow>
+            <FormLabelText>비밀번호</FormLabelText>
+            <FormInput type="password" id="password" name="password" />
+          </FormRow>
+
+          <FormSubmitBtn type="submit" big>
+            로그인하기
+          </FormSubmitBtn>
+        </FormWrapper>
+      </FormContainer>
+    </FormLayout>
   );
 }
 
