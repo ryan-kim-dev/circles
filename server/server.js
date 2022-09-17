@@ -129,13 +129,23 @@ app.post('/api/users/login', (req, res) => {
   });
 });
 
-app.post('/api/posts', upload.single('image'), async (req, res) => {
-  const image = await new Image({
-    key: req.file.filename,
-    originalFileName: req.file.originalname,
-  }).save();
-  // db에 저장되고 난 후 응답을 보내도록 async/await으로 비동기 처리
-  res.status(200).json(image);
+app.post('/api/posts', auth, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.user) throw new Error('권한이 없습니다. 로그인 해주세요');
+    const image = await new Image({
+      user: {
+        _id: req.user.id,
+        username: req.user.username,
+      },
+      key: req.file.filename,
+      originalFileName: req.file.originalname,
+    }).save();
+    // db에 저장되고 난 후 응답을 보내도록 async/await으로 비동기 처리
+    res.status(200).json(image);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
 });
 
 app.get('/api/posts', async (req, res) => {
