@@ -3,14 +3,14 @@ import React from 'react';
 // import Kakao from 'kakaojs';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Upload from './features/posts/components/Upload';
+import Upload from './pages/Upload';
 import Home from './pages/Home';
 import GlobalStyle from './GlobalStyle';
 import 'react-toastify/dist/ReactToastify.css';
 import Course from './pages/Course';
-import RegisterForm from './features/users/components/RegisterForm';
-import LoginForm from './features/users/components/LoginForm';
-import Navbar from './components/Navbar';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Navbar from './components/Common/Navbar';
 import Mypage from './pages/Mypage';
 
 function App() {
@@ -24,8 +24,8 @@ function App() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/course" element={<Course />} />
         <Route path="/mypage" element={<Mypage />} />
-        <Route path="/register" element={<RegisterForm />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
 
       <Navbar />

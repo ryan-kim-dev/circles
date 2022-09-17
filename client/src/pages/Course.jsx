@@ -1,5 +1,5 @@
 import React from 'react';
-import Map from '../features/maps/components/Map';
+import Map from '../components/maps/Map';
 
 function Course() {
   return (

@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
-import { addPost } from '../../../apis/postApi';
+
 // import axios from 'axios';
 // import { toast } from 'react-toastify';
 import * as S from './UploadStyles';
 
-function Upload() {
-  const queryClient = useQueryClient();
-  const addPostMutation = useMutation(addPost, {
-    onSuccess: () => {
-      // 캐시 무효화하고 다시 Fetch
-      queryClient.invalidateQueries('posts');
-    },
-  });
-
+function UploadForm() {
   const navigate = useNavigate();
 
   const defaultFileName = '이미지 파일을 업로드 해주세요';
@@ -35,7 +26,7 @@ function Upload() {
     e.preventDefault();
     const formData = new FormData();
     formData.append('image', file);
-    addPostMutation.mutate(formData);
+    // TODO: RTK - 게시글 POST요청
     return navigate('/');
   };
 
@@ -60,4 +51,4 @@ function Upload() {
   );
 }
 
-export default Upload;
+export default UploadForm;

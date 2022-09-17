@@ -1,5 +1,5 @@
 import React from 'react';
-import PostList from '../features/posts/components/PostList';
+import PostList from '../components/posts/PostList';
 import { Layout } from '../GlobalStyle';
 
 function Home() {

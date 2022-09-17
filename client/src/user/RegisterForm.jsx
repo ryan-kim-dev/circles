@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
-import { loginWithEmailPw } from '../../../apis/userApi';
-import { Layout } from '../../../GlobalStyle';
+import { useDispatch } from 'react-redux';
+import { Layout } from '../GlobalStyle';
+import { signUpUser } from '../redux/userSlice';
 
-function LoginForm() {
-  const loginWithEmailPwMutation = useMutation(loginWithEmailPw, {
-    onSuccess: () => {
-      // 캐시 무효화하고 다시 Fetch
-      console.log('로그인 성공');
-    },
-  });
+function RegisterForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [userInfo, setuserInfo] = useState({
     email: '',
+    username: '',
     password: '',
   });
 
@@ -28,14 +24,20 @@ function LoginForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    loginWithEmailPwMutation.mutate(userInfo);
-
+    const res = await dispatch(signUpUser(userInfo)); // 리듀서 사용
+    console.log(res.data);
     return navigate('/');
   };
 
   return (
     <Layout>
       <form htmlFor="register" onSubmit={onSubmit} onChange={onChange}>
+        <div>
+          <label htmlFor="username">
+            닉네임
+            <input id="username" name="username" type="text" />
+          </label>
+        </div>
         <div>
           <label htmlFor="email">
             이메일 주소
@@ -49,10 +51,10 @@ function LoginForm() {
           </label>
         </div>
 
-        <button type="submit">로그인</button>
+        <button type="submit">회원가입</button>
       </form>
     </Layout>
   );
 }
 
-export default LoginForm;
+export default RegisterForm;

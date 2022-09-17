@@ -1,16 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
+import { logoutUser } from '../../redux/userSlice';
 
 function Navbar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    axios.get('/api/users/logout').then((res) => {
-      console.log(res);
-      return navigate('/');
-    });
+    const res = dispatch(logoutUser());
+    console.log(res);
+    return navigate('/');
   };
 
   const handleMypage = async () => {
