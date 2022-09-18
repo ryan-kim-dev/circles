@@ -60,11 +60,13 @@ function Navbar() {
           코스
         </NavBtn>
       </NavbarBtnBox>
-      <NavbarBtnBox>
-        <NavBtn type="button" onClick={handleMypage}>
-          마이페이지
-        </NavBtn>
-      </NavbarBtnBox>
+      {localStorage.loginStatus === 'true' && (
+        <NavbarBtnBox>
+          <NavBtn type="button" onClick={handleMypage}>
+            마이페이지
+          </NavBtn>
+        </NavbarBtnBox>
+      )}
     </NavbarLayout>
   );
 }
