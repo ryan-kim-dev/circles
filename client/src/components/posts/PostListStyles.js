@@ -9,6 +9,10 @@ export const PostListItem = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0 160px;
+  @media screen and (max-width: 1024px) {
+    padding: 0;
+  }
   img {
     max-width: 100%;
     margin: auto;

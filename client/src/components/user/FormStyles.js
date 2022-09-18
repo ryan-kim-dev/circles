@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from '../GlobalStyle';
+import { Button } from '../../GlobalStyle';
 
 export const FormLayout = styled.div`
   background-color: #ffffff;
@@ -17,7 +17,7 @@ export const FormContainer = styled.div`
   color: black;
   border: 1px solid #1d3561;
   width: 400px;
-  height: 500px;
+  height: 650px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -81,10 +81,6 @@ export const FormInput = styled.input`
 `;
 
 export const FormSubmitBtn = styled(Button)`
-  /*
-  역할: 회원가입 폼 제출버튼 
-  스타일링: GlobalStyle의 Button 확장으로 받아와 스타일을 덮어씌웁니다.
-  */
   margin-top: 20px;
   display: flex;
   justify-content: center;
@@ -93,4 +89,17 @@ export const FormSubmitBtn = styled(Button)`
   height: 40px;
   font-size: 13px;
   color: #fff;
+`;
+
+export const FormIsUserSpan = styled.span`
+  font-size: 12px;
+  color: gray;
+`;
+
+export const FormLoginBtn = styled.button`
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 18px;
+  font-weight: bold;
 `;

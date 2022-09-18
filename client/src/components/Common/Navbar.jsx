@@ -3,17 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
-import { logoutUser } from '../../redux/userSlice';
+import { AiOutlineHome, AiOutlinePlusCircle } from 'react-icons/ai';
+import { GiHorizonRoad } from 'react-icons/gi';
+import { FaUserAlt } from 'react-icons/fa';
 
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await dispatch(logoutUser());
-    localStorage.clear();
-    return navigate('/');
-  };
 
   const handleMypage = async () => {
     const response = await axios.get('/api/users/auth');
@@ -24,46 +20,25 @@ function Navbar() {
 
   return (
     <NavbarLayout>
-      {localStorage.loginStatus === 'true' ? (
-        <NavbarBtnBox>
-          <NavBtn type="button" onClick={handleLogout}>
-            로그아웃
-          </NavBtn>
-        </NavbarBtnBox>
-      ) : (
-        <>
-          <NavbarBtnBox>
-            <NavBtn type="button" onClick={() => navigate('/register')}>
-              회원가입
-            </NavBtn>
-          </NavbarBtnBox>
-          <NavbarBtnBox>
-            <NavBtn type="button" onClick={() => navigate('/login')}>
-              로그인
-            </NavBtn>
-          </NavbarBtnBox>
-        </>
-      )}
-
       <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/')}>
-          홈
+          <AiOutlineHome />
         </NavBtn>
       </NavbarBtnBox>
       <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/upload')}>
-          업로드
+          <AiOutlinePlusCircle />
         </NavBtn>
       </NavbarBtnBox>
       <NavbarBtnBox>
         <NavBtn type="button" onClick={() => navigate('/course')}>
-          코스
+          <GiHorizonRoad />
         </NavBtn>
       </NavbarBtnBox>
       {localStorage.loginStatus === 'true' && (
         <NavbarBtnBox>
           <NavBtn type="button" onClick={handleMypage}>
-            마이페이지
+            <FaUserAlt />
           </NavBtn>
         </NavbarBtnBox>
       )}
@@ -76,7 +51,7 @@ export default Navbar;
 const NavbarLayout = styled.div`
   background-color: #fff;
   width: 100vw;
-  height: 3rem;
+  height: 50px;
   border: 1px solid black;
   position: fixed;
   bottom: 0;
@@ -92,4 +67,8 @@ const NavBtn = styled.button`
   cursor: pointer;
   background-color: transparent;
   width: 60px;
+
+  svg {
+    font-size: 20px;
+  }
 `;
