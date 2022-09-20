@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -15,13 +16,14 @@ function Upload() {
   const navigate = useNavigate();
 
   const defaultFileName = '이미지 파일을 업로드 해주세요';
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
   const [imgSrc, setImgSrc] = useState(null);
   const [fileName, setFileName] = useState(defaultFileName);
 
   const imgSelectHandler = (e) => {
-    const imageFile = e.target.files[0];
-    setFile(imageFile);
+    const imageFiles = e.target.files;
+    setFiles(imageFiles);
+    const imageFile = imageFiles[0];
     setFileName(imageFile.name);
     const fileReader = new FileReader();
     fileReader.readAsDataURL(imageFile);
@@ -31,7 +33,7 @@ function Upload() {
     e.preventDefault();
     // 요청 본문에서 파일 형식을 form-data로 하므로 append only. -> .append(key, value)
     const formData = new FormData();
-    formData.append('image', file);
+    for (const file of files) formData.append('image', file);
 
     try {
       const res = await axios.post('/api/posts', formData, {
@@ -67,6 +69,7 @@ function Upload() {
             <input
               id="image"
               type="file"
+              multiple
               accept="image/*"
               onChange={imgSelectHandler}
             />
