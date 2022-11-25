@@ -1,61 +1,78 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
+import * as S from './MapStyles';
+import SearchResults from './SearchResults';
 
-function Map() {
-  const newScript = (src) => {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = src;
-      script.addEventListener('load', () => {
-        resolve();
-      });
-      script.addEventListener('error', (e) => {
-        reject(e);
-      });
-      document.head.appendChild(script);
-    });
-  };
+const { kakao } = window;
+
+function KakaoMap({ keyword, submenu2, scrollToSection }) {
+  const ps = new kakao.maps.services.Places();
+  const bounds = new kakao.maps.LatLngBounds();
+  const [info, setInfo] = useState();
+  const [markers, setMarkers] = useState([]);
+  const [map, setMap] = useState();
+
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    // 카카오맵 스크립트 읽어오기
-    const myScript = newScript(
-      `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.REACT_APP_JAVASCRIPT_KEY}`,
-    );
+    if (!map) return;
+    let markers = [];
 
-    // 스크립트 읽기 완료 후 카카오맵 설정
-    myScript.then(() => {
-      console.log('script loaded!!!');
-      const { kakao } = window;
-      kakao.maps.load(() => {
-        const mapContainer = document.getElementById('map');
-        const options = {
-          center: new kakao.maps.LatLng(37.56000302825312, 126.97540593203321), // 좌표설정
-          level: 3,
-        };
-        const map = new kakao.maps.Map(mapContainer, options); // 맵생성
-        // 마커설정
-        const markerPosition = new kakao.maps.LatLng(
-          37.56000302825312,
-          126.97540593203321,
-        );
-        const marker = new kakao.maps.Marker({
-          position: markerPosition,
-        });
-        marker.setMap(map);
-      });
+    ps.keywordSearch(keyword, async (data, status, _pagination) => {
+      if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+
+        for (var i = 0; i < data.length; i++) {
+          // @ts-ignore
+          markers.push({
+            position: {
+              lat: data[i].y,
+              lng: data[i].x,
+            },
+            content: data[i].place_name,
+          });
+          // @ts-ignore
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+        setMarkers(markers);
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
+      }
+      setPlaces([...data]);
     });
-  }, []);
+  }, [keyword]);
+
   return (
-    <div>
-      <MapContainer id="map" />
-    </div>
+    <>
+      <S.StyledMap // 로드뷰를 표시할 Container
+        center={{
+          lat: 37.566826,
+          lng: 126.9786567,
+        }}
+        level={3}
+        onCreate={setMap}
+      >
+        {markers.map((marker) => (
+          <S.StyledMarker
+            key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+            position={marker.position}
+            onClick={() => setInfo(marker)}
+          >
+            {info && info.content === marker.content && (
+              <div style={{ color: '#000' }}>{marker.content}</div>
+            )}
+          </S.StyledMarker>
+        ))}
+      </S.StyledMap>
+      <SearchResults
+        places={places}
+        submenu2={submenu2}
+        scrollToSection={scrollToSection}
+      />
+    </>
   );
 }
 
-export default Map;
-
-const MapContainer = styled.div`
-  width: 350px;
-  height: 400px;
-  border: 1px solid black;
-`;
+export default KakaoMap;

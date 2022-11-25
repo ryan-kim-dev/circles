@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../components/Common/Header';
-import Map from '../components/maps/Map';
+import Maps from '../components/maps';
 
 function Course() {
   return (
     <div>
       <Header />
-      <Map />
+      <Maps />
     </div>
   );
 }
